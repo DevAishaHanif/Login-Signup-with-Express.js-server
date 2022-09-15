@@ -19,6 +19,7 @@
   "homepage": "https://github.com/DevAishaHanif/Login-Signup-with-Express.js-server#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "nanoid": "^4.0.0"
   }
 }

@@ -1,5 +1,8 @@
 import express from 'express'
 import cors from 'cors'
+import { nanoid } from 'nanoid'
+
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -40,9 +43,7 @@ app.post("/signup", (req, res) => {
     });
     return;
   }
-
-
-  let newUser = {
+let newUser = {
     userId: naonid(),
     firstName: body.firstName,
     lastName: body.lastName,
@@ -55,16 +56,14 @@ app.post("/signup", (req, res) => {
 
 
 app.post("/login", (req, res) => {
-
-  let body = req.body;
+   let body = req.body;
   if (!body.email || !body.password) {
     res.status(400).send(
       `required fields are missing, request example:
             {
               "email": "abc@abc.com",
               "password": "12345"
-            }`
-    );
+            }`);
     return;
   }
   let isFound = false;
@@ -95,8 +94,7 @@ app.post("/login", (req, res) => {
     return;
   }
 
-}
-)    
+})    
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
