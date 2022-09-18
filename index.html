@@ -9,15 +9,14 @@
     <title>SIGNUP PAGE</title>
 </head>
 <body>
-    <div class="container">
-        <h1>SIGNUP FORM :</h1>
+            <h1>SIGNUP FORM :</h1>
         <form onsubmit="signup(); return false;">
 
-         <label for="firstName*">FirstName*</label>
+         <label for="firstName*">First Name*</label>
          <input type="text" id="firstName" required/>
          <br/>
 
-         <label for="lastName*">LastName*</label>
+         <label for="lastName*">Last Name*</label>
          <input type="text" id="lastName" required/>
          <br/>
 
@@ -36,7 +35,7 @@
          <input type="submit" value="Signup"/>
    </form>
    <p id="message"></p>
- </div>
+
   
                      <!-- JAVASCRIPT CODE -->
     
@@ -50,11 +49,11 @@
         var confirmpassword = document.getElementById("confirmpassword").value;
 
     if(password !== confirmpassword) {
-       document.querySelector("#message").innerHTML = 'PASSWORD donot match :-( please try again..';
+       document.querySelector("#message").innerHTML = 'PASSWORDS do not match :-( please try again..';
        return;
     }
 
- axios.post('http://https://login-signup-server-expressjs.herokuapp.com/signup',{
+ axios.post('https://login-signup-server-expressjs.herokuapp.com/signup',{
     firstName,
     lastName,
     email,
@@ -66,7 +65,7 @@
     })
     .catch(function (error) {
         console.log(error.response.data);
-        document.querySelector("#message").innerHTML = error.response.message;
+        document.querySelector("#message").innerHTML = error.response.data.message;
     })
 }
 

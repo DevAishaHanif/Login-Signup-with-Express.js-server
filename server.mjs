@@ -2,12 +2,11 @@ import express from 'express'
 import cors from 'cors'
 import { nanoid } from 'nanoid'
 
-
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 let userBase = [];
 
@@ -39,7 +38,7 @@ app.post("/signup", (req, res) => {
   }
   if (isFound) {
     req.status(400).send({
-      message: `Email ${body.email} Alredy Exist :-(`
+      message: `email ${body.email} Alredy Exist :-(`
     });
     return;
   }
@@ -51,7 +50,7 @@ let newUser = {
     password: body.password
   }
   userBase.push(newUser);
-  res.status(201).send({ message: "USER is created :-)" });
+  res.status(201).send({ message: "user is created :-)" });
 });
 
 
@@ -89,7 +88,7 @@ app.post("/login", (req, res) => {
   }
   if (!isFound) {
     res.status(404).send({
-      message: "USER not found :-/"
+      message: "user not found :-/"
     })
     return;
   }
