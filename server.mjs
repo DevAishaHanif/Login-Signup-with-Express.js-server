@@ -43,7 +43,7 @@ app.post("/signup", (req, res) => {
     return;
   }
 let newUser = {
-    userId: naonid(),
+    userId: nanoid(),
     firstName: body.firstName,
     lastName: body.lastName,
     email: body.email.toLowerCase(),
