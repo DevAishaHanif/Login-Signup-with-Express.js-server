@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { nanoid } from 'nanoid'
+import  mongoose from 'mongoose'
 
 const app = express();
 app.use(express.json());
@@ -8,7 +9,15 @@ app.use(cors());
 
 const port = process.env.PORT || 4000;
 
-let userBase = [];
+const userSchema = new mongoose.Schema({
+  firstName: String,
+  lastName:  String,
+  email:     String,
+  password:  String,
+  createdOn:  { type: Date, default: Date.now },
+});
+const userModel = mongoose.model('User', userSchema);
+
 
 app.post("/signup", (req, res) => {
 
@@ -29,28 +38,23 @@ app.post("/signup", (req, res) => {
     );
     return;
   }
-  let isFound = false;
-  for (let i = 0; i < userBase.length; i++) {
-    if (userBase[i].email === body.email.toLowerCase()) {
-      isFound = true;
-      break;
-    }
-  }
-  if (isFound) {
-    req.status(400).send({
-      message: `email ${body.email} Alredy Exist :-(`
-    });
-    return;
-  }
-let newUser = {
-    userId: nanoid(),
+  
+let newUser = new userModel({
     firstName: body.firstName,
     lastName: body.lastName,
     email: body.email.toLowerCase(),
     password: body.password
-  }
-  userBase.push(newUser);
-  res.status(201).send({ message: "user is created :-)" });
+  });
+  
+  newUser.save((err, result) => {
+    if (!err) {
+      console.log("data saved:", result )
+      res.status(201).send({ message: "user is created :-)" });
+   } else {
+    console.log("db error: ",err);
+    res.status(500).send({ message: "Internal Server Error" });
+   }
+  })
 });
 
 
@@ -74,7 +78,7 @@ app.post("/login", (req, res) => {
           firstName: userBase[i].firstName,
           lastName: userBase[i].lastName,
           email: userBase[i].email,
-          message: "Congratulations!! Login successful :-) ..."
+          message: "Congratulations!! Login successful :-)"
         })
         return;
 
@@ -100,6 +104,32 @@ app.listen(port, () => {
 
 
 
+///////////////////////////////////////////////////////////////////////////
+let dbURI = ('mongodb+srv://abc:abc@cluster0.zauilio.mongodb.net/socialMediaBase?retryWrites=true&w=majority');
+mongoose.connect(dbURI);
 
+// //////////////  MONGODB CONNECTED DISCONNECTED EVENTS /////////////////// 
+mongoose.connection.on('connected', function() {
+  console.log("MONGOOSE is connected");
+});
+
+mongoose.connection.on('disconnected', function() {
+  console.log("MONGOOSE is disconnected");
+});
+
+
+mongoose.connection.on('error', function(err) {
+  console.log("MONGOOSE connection error:", err);
+  process.exit(1);
+});
+
+process.on('SIGINT', function() {
+  console.log("APP is terminating");
+  mongoose.connection.close(function() {
+    console.log('MONGOOSE default connection closed');
+    process.exit(0);
+  });
+});
+//////////////////// MONGODB CONNECTED DISCONNECTED EVENTS ////////////////
 
 

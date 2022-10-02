@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <title>SIGNUP PAGE</title>
+</head>
+<body>
+    <div class="Wrapper">
+        <div class="container">
+            <h1>SIGNUP FORM :</h1>
+        <form onsubmit="signup(); return false;">
+           <div class="control">
+                <p><label>First Name<span>*</span></label></p>
+                  <input type="text" name="name" id="firstName" placeholder="Your First Name" value="" autocomplete="off" required />
+            </div>
+            <div class="control">
+                <p><label>Last Name<span>*</span></label></p>
+                  <input type="text" name="name" id="lastName" placeholder="Your Last Name" value="" autocomplete="off" required />
+            </div>
+            <div class="control">
+                <p><label>E-mail Address<span>*</span></label></p>
+                <input type="email" name="email" id="email" placeholder="Your E-mail" value="" autocomplete="off" required />
+           </div>
+           <div class="control">
+            <p><label>Create A Password<span>*</span></label></p>
+            <input type="Password" name="password" id="password" placeholder="Your Password" value="" autocomplete="off" required />
+       </div>
+           <div class="control">
+        <p><label>Confirm Password<span>*</span></label></p>
+        <input type="password" name="" id="confirmpassword" placeholder="Check your password" autocomplete="off" required />
+  </div><br/>
+      <input type="submit" value="SIGNUP" class="btn"/>
+        <p class="ftext">
+          <a class="flink" href="login.html" id="c.account">Already have an account? Sign in..</a>
+        </p>
+   </form>
+   <p id="message"></p>
+</div>
+</div> 
+  
+                     <!-- JAVASCRIPT CODE -->
+    
+<script>
+
+    function signup() {
+        var firstName = document.getElementById("firstName").value;
+        var lastName = document.getElementById("lastName").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+        var confirmpassword = document.getElementById("confirmpassword").value;
+
+    if(password !== confirmpassword) {
+       document.querySelector("#message").innerHTML = 'PASSWORDS do not match :-( please try again..';
+       return;
+    }
+
+ axios.post('http://localhost:4000/signup',{
+    firstName,
+    lastName,
+    email,
+    password,
+ })
+    .then(function (response) {
+        console.log(response.data);
+        document.querySelector("#message").innerHTML = response.data.message;
+    })
+    .catch(function (error) {
+        console.log(error.response.data);
+        document.querySelector("#message").innerHTML = error.response.data.message;
+    })
+}
+
+
+   </script>
+  </body>
+</html>
