@@ -10,10 +10,14 @@ app.use(cors());
 const port = process.env.PORT || 4000;
 
 const userSchema = new mongoose.Schema({
-  firstName: String,
-  lastName:  String,
-  email:     String,
-  password:  String,
+  firstName: { type: String },
+  lastName: { type: String },
+  email: { type: String, required: true } ,
+  password:  { type: String, required: true },
+  
+  age:  { type: Number, min: 17, max: 65, default: 18 },
+  subjects: Array,
+  isMarried: { type: Boolean,  default: false },
   createdOn:  { type: Date, default: Date.now },
 });
 const userModel = mongoose.model('User', userSchema);
@@ -51,7 +55,7 @@ let newUser = new userModel({
       console.log("data saved:", result )
       res.status(201).send({ message: "user is created :-)" });
    } else {
-    console.log("db error: ",err);
+    console.log("db error: ", err);
     res.status(500).send({ message: "Internal Server Error" });
    }
   })
